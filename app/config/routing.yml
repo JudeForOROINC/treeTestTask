@@ -1,0 +1,8 @@
+sparkle_tree:
+    resource: "@SparkleTreeBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation
