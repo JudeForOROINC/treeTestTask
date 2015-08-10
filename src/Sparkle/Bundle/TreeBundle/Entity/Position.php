@@ -31,9 +31,10 @@ class Position
     /**
      * @var integer
      *
-     * @ORM\Column(name="category_id", type="integer")
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="positions")
+     * @ORM\JoinColumn(name="category_id", referencedColumnName="id", onDelete="Cascade")
      */
-    private $categoryId;
+    private $category;
 
     /**
      * @var string
@@ -76,28 +77,6 @@ class Position
         return $this->typeId;
     }
 
-    /**
-     * Set categoryId
-     *
-     * @param integer $categoryId
-     * @return Position
-     */
-    public function setCategoryId($categoryId)
-    {
-        $this->categoryId = $categoryId;
-
-        return $this;
-    }
-
-    /**
-     * Get categoryId
-     *
-     * @return integer 
-     */
-    public function getCategoryId()
-    {
-        return $this->categoryId;
-    }
 
     /**
      * Set positionName
@@ -120,5 +99,28 @@ class Position
     public function getPositionName()
     {
         return $this->positionName;
+    }
+
+    /**
+     * Set category
+     *
+     * @param \Sparkle\Bundle\TreeBundle\Entity\Category $category
+     * @return Position
+     */
+    public function setCategory(\Sparkle\Bundle\TreeBundle\Entity\Category $category = null)
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * Get category
+     *
+     * @return \Sparkle\Bundle\TreeBundle\Entity\Category 
+     */
+    public function getCategory()
+    {
+        return $this->category;
     }
 }

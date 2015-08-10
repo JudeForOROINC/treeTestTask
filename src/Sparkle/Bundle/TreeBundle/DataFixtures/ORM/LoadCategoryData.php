@@ -26,7 +26,7 @@ class LoadCategoryData implements FixtureInterface
         1,2,3,2,2,1,1,3,1
     );
     protected $positionParent = array(
-        1,2,3,4,5,6,7,8,9
+        1,1,1,4,4,4,5,5,5
     );
     protected $categoryName = array(
         'category 1',
@@ -59,7 +59,7 @@ class LoadCategoryData implements FixtureInterface
             $Position = new Position();
             $Position->setPositionName($v);
             $Position->setTypeId($this->positionType[$k]);
-            $Position->setCategoryId($this->positionParent[$k]);
+            $Position->setCategory($this->category[$this->positionParent[$k]]);
             $manager->persist($Position);
         }
 

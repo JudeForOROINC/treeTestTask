@@ -42,8 +42,10 @@ class Category
      **/
     private $children;
 
-
-
+    /**
+     * @ORM\OneToMany(targetEntity="Position", mappedBy="category")
+     **/
+    private $positions;
 
     /**
      * @var integer
@@ -165,5 +167,38 @@ class Category
     public function getParent()
     {
         return $this->parent;
+    }
+
+    /**
+     * Add positions
+     *
+     * @param \Sparkle\Bundle\TreeBundle\Entity\Position $positions
+     * @return Category
+     */
+    public function addPosition(\Sparkle\Bundle\TreeBundle\Entity\Position $positions)
+    {
+        $this->positions[] = $positions;
+
+        return $this;
+    }
+
+    /**
+     * Remove positions
+     *
+     * @param \Sparkle\Bundle\TreeBundle\Entity\Position $positions
+     */
+    public function removePosition(\Sparkle\Bundle\TreeBundle\Entity\Position $positions)
+    {
+        $this->positions->removeElement($positions);
+    }
+
+    /**
+     * Get positions
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPositions()
+    {
+        return $this->positions;
     }
 }
