@@ -8,6 +8,7 @@ use Sparkle\Bundle\TreeBundle\Entity\Category;
 use Sparkle\Bundle\TreeBundle\Entity\Position;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+
 class LoadCategoryData implements FixtureInterface
 {
 
@@ -55,7 +56,7 @@ class LoadCategoryData implements FixtureInterface
     private function loadPositions(ObjectManager $manager)
     {
 
-        foreach( $this->positionName as $k=>$v){
+        foreach ($this->positionName as $k => $v) {
             $Position = new Position();
             $Position->setPositionName($v);
             $Position->setTypeId($this->positionType[$k]);
@@ -71,7 +72,7 @@ class LoadCategoryData implements FixtureInterface
      */
     private function loadCategory(ObjectManager $manager)
     {
-        foreach( $this->categoryName as $k=>$v){
+        foreach ($this->categoryName as $k => $v) {
             $category = new Category();
             $category->setCategoryName($v);
             $category->setSortOrder($k);
@@ -80,11 +81,11 @@ class LoadCategoryData implements FixtureInterface
         }
         $manager->flush();
         $entities = $manager->getRepository('SparkleTreeBundle:Category')->findAll();
-        foreach ($entities as $entity){
+        foreach ($entities as $entity) {
             $this->category[$entity->getSortOrder()] = $entity;
         }
-        foreach ($this->categoryParent as $k=>$v){
-            if ($v!==null){
+        foreach ($this->categoryParent as $k => $v) {
+            if ($v!==null) {
                 /** @var Category $entity */
                 $entity = $this->category[$k];
                 $entity->setParent($this->category[$v]);
@@ -93,5 +94,4 @@ class LoadCategoryData implements FixtureInterface
         }
         $manager->flush();
     }
-
 }
