@@ -38,12 +38,13 @@ class LoadCategoryData implements FixtureInterface
     );
     protected $categoryParent = array(
         null,
-        1,
+        0,
         null,
+        2,
         3,
-        4,
         null,
     );
+    protected $category;
 
     public function load(ObjectManager $manager)
     {
@@ -65,6 +66,9 @@ class LoadCategoryData implements FixtureInterface
         $manager->flush();
     }
 
+    /**
+     * @param ObjectManager $manager
+     */
     private function loadCategory(ObjectManager $manager)
     {
         foreach( $this->categoryName as $k=>$v){
@@ -73,6 +77,19 @@ class LoadCategoryData implements FixtureInterface
             $category->setSortOrder($k);
 
             $manager->persist($category);
+        }
+        $manager->flush();
+        $entities = $manager->getRepository('SparkleTreeBundle:Category')->findAll();
+        foreach ($entities as $entity){
+            $this->category[$entity->getSortOrder()] = $entity;
+        }
+        foreach ($this->categoryParent as $k=>$v){
+            if ($v!==null){
+                /** @var Category $entity */
+                $entity = $this->category[$k];
+                $entity->setParent($this->category[$v]);
+                $manager->merge($entity);
+            }
         }
         $manager->flush();
     }

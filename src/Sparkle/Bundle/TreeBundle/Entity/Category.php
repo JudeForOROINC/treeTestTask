@@ -32,7 +32,7 @@ class Category
      * @var integer
      *
      * @ORM\ManyToOne( targetEntity="Category", inversedBy="children")
-     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $parent;
 
@@ -41,6 +41,9 @@ class Category
      * @ORM\OneToMany(targetEntity="Category", mappedBy="parent")
      **/
     private $children;
+
+
+
 
     /**
      * @var integer
@@ -82,28 +85,7 @@ class Category
         return $this->categoryName;
     }
 
-    /**
-     * Set parentId
-     *
-     * @param integer $parentId
-     * @return Category
-     */
-    public function setParentId($parentId)
-    {
-        $this->parentId = $parentId;
 
-        return $this;
-    }
-
-    /**
-     * Get parentId
-     *
-     * @return integer 
-     */
-    public function getParentId()
-    {
-        return $this->parentId;
-    }
 
     /**
      * @return mixed
@@ -119,5 +101,69 @@ class Category
     public function setSortOrder($sortOrder)
     {
         $this->sortOrder = $sortOrder;
+    }
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->children = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add children
+     *
+     * @param \Sparkle\Bundle\TreeBundle\Entity\Category $children
+     * @return Category
+     */
+    public function addChild(\Sparkle\Bundle\TreeBundle\Entity\Category $children)
+    {
+        $this->children[] = $children;
+
+        return $this;
+    }
+
+    /**
+     * Remove children
+     *
+     * @param \Sparkle\Bundle\TreeBundle\Entity\Category $children
+     */
+    public function removeChild(\Sparkle\Bundle\TreeBundle\Entity\Category $children)
+    {
+        $this->children->removeElement($children);
+    }
+
+    /**
+     * Get children
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getChildren()
+    {
+        return $this->children;
+    }
+
+    /**
+     * Set parent
+     *
+     * @param \Sparkle\Bundle\TreeBundle\Entity\Category $parent
+     * @return Category
+     */
+    public function setParent(Category $parent = null)
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * Get parent
+     *
+     * @return \Sparkle\Bundle\TreeBundle\Entity\Category 
+     */
+    public function getParent()
+    {
+        return $this->parent;
     }
 }
