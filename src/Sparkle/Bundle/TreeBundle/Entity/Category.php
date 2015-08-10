@@ -31,9 +31,22 @@ class Category
     /**
      * @var integer
      *
-     * @ORM\Column(name="parent_id", type="integer")
+     * @ORM\ManyToOne( targetEntity="Category", inversedBy="children")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      */
-    private $parentId;
+    private $parent;
+
+
+    /**
+     * @ORM\OneToMany(targetEntity="Category", mappedBy="parent")
+     **/
+    private $children;
+
+    /**
+     * @var integer
+     * @ORM\Column(name="sort_order", type="integer")
+     */
+    private $sortOrder;
 
 
     /**
@@ -90,5 +103,21 @@ class Category
     public function getParentId()
     {
         return $this->parentId;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSortOrder()
+    {
+        return $this->sortOrder;
+    }
+
+    /**
+     * @param mixed $sortOrder
+     */
+    public function setSortOrder($sortOrder)
+    {
+        $this->sortOrder = $sortOrder;
     }
 }
